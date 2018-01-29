@@ -33,7 +33,6 @@ class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties,
             if (params.isEmpty()) return ImagePair(imageFileProperties, null)
 
             val param = params.first()
-            val assetFileDescriptor = contentResolver.openFileDescriptor(param, MODE_READ)
 
             val options = BitmapFactory.Options()
             options.inScaled = true
