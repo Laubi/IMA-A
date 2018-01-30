@@ -1,5 +1,6 @@
 package at.laubi.finalproject
 
+import android.app.Application
 import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,6 +8,7 @@ import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.AsyncTask
 import java.io.File
+import java.io.FileOutputStream
 
 /**
  * Created by dlaub on 21.01.2018.
@@ -20,9 +22,10 @@ interface AsyncImageLoaderListener{
 
 class ImagePair(val props: ImageFileProperties, val bm: Bitmap?)
 
-class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties, context: Context, var listener: AsyncImageLoaderListener) {
+class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties, val context: Context, var listener: AsyncImageLoaderListener?) {
     private val contentResolver = context.contentResolver
     private val targetSize = 100
+    private val cache = DiskBitmapCache(context.cacheDir, true)
 
     fun loadAsync(){
         LoadImage().execute(imageFileProperties.uri)
@@ -31,8 +34,11 @@ class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties,
     private inner class LoadImage: AsyncTask<Uri, Void, ImagePair>() {
         override fun doInBackground(vararg params: Uri?): ImagePair {
             if (params.isEmpty()) return ImagePair(imageFileProperties, null)
-
             val param = params.first()
+            val cacheId = imageFileProperties.id.toString(16)
+
+            val cachedBitmap = cache.loadBitmap(cacheId)
+            if(cachedBitmap != null) return ImagePair(imageFileProperties, cachedBitmap)
 
             val options = BitmapFactory.Options()
             options.inScaled = true
@@ -40,6 +46,7 @@ class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties,
 
             val bm = BitmapFactory.decodeStream(contentResolver.openInputStream(param), null, options)
 
+            cache.storeBitmap(bm, cacheId)
 
             return ImagePair(imageFileProperties, bm)
         }
