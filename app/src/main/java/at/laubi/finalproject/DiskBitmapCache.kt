@@ -15,7 +15,7 @@ class DiskBitmapCache(directory: File, createSubDirectory: Boolean = false) {
         if(!directory.exists()){
             directory.mkdir()
         }else if (!directory.isDirectory){
-            throw IllegalArgumentException("Cache-directory is not a directory: '$directory'")
+            throw IllegalArgumentException("Cache-directory is not a directory: '$directory'") as Throwable
         }
 
         cacheDirectory = if(createSubDirectory){
