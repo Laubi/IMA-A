@@ -85,11 +85,11 @@ private class ImageAdapter(val parent: MainActivity, initialCount: Int = 0): Bas
     }
 
     override fun getItem(index: Int): Any {
-        return data.get(index)
+        return data[index]
     }
 
     override fun getItemId(index: Int): Long {
-        return index +0L
+        return index + 0L
     }
 
     override fun getCount(): Int {
