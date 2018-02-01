@@ -1,19 +1,21 @@
 package at.laubi.finalproject.activities
 
 import android.app.Activity
+import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup
 import android.widget.*
 import at.laubi.finalproject.*
+import at.laubi.finalproject.components.LoadingImage
 import at.laubi.finalproject.imageUtilities.*
 
 
 class MainActivity : Activity() {
-    private var layout: GridView? = null
+    private lateinit var layout: GridView
     private val asyncImageLoaderListener: AsyncImageLoaderListener
-    private var adapter: ImageAdapter? = null
+    private lateinit var adapter: LoadingImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -21,15 +23,21 @@ class MainActivity : Activity() {
 
         val images = findImages(this)
 
-        adapter = ImageAdapter(this, images.size)
+        adapter = LoadingImageAdapter(this, images.size)
 
         layout = this.findViewById(R.id.gridView)
-        layout?.adapter = adapter
-        layout?.numColumns = (getScreenSize(windowManager).widthPixels / 100) + 1
+        layout.adapter = adapter
+        layout.numColumns = (getScreenSize(windowManager).widthPixels / 100) + 1
 
 
         images.forEach { image ->
             AsyncImageLoader(image, this, asyncImageLoaderListener).loadAsync()
+        }
+
+        layout.onItemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
+            adapter.getData(pos)?.let {
+                Toast.makeText(this, pos.toString(), Toast.LENGTH_SHORT).show()
+            }
         }
     }
 
@@ -37,50 +45,61 @@ class MainActivity : Activity() {
         asyncImageLoaderListener = object : AsyncImageLoaderListener {
             override fun finishedLoading(pair: ImagePair) {
                 if (pair.bm != null) {
-                    adapter?.addItem(pair)
-                    adapter?.notifyDataSetChanged()
+                    adapter.addItem(pair)
+                }else{
+                    adapter.decreseAmount()
                 }
 
             }
         }
     }
-
-    fun clickedImage(props: ImageFileProperties){
-        val intent = Intent(this, ImageDisplayActivity::class.java)
-        intent.putExtra("ID", props.id)
-        intent.putExtra("DATA", props.data)
-        startActivity(intent)
-    }
 }
 
 
-private class ImageAdapter(val parent: MainActivity, initialCount: Int = 0): BaseAdapter(){
+
+private class LoadingImageAdapter(context: Context, initialCount: Int = 0): BaseAdapter(){
+    private val views = ArrayList<LoadingImage>(initialCount)
     private val data = ArrayList<ImagePair>(initialCount)
+    private var amount = initialCount
+
+    private companion object {
+        val layoutParams = AbsListView.LayoutParams(100, 100)
+    }
+
+    init{
+        for(i in 0.rangeTo(initialCount)){
+            val view = LoadingImage(context)
+            view.layoutParams = layoutParams
+            view.setPadding(0,0,0,0)
+            view.scaleType = ImageView.ScaleType.CENTER_CROP
+            views.add(view)
+        }
+    }
+
+    fun decreseAmount(){
+        amount -= 1
+        notifyDataSetChanged()
+    }
 
     fun addItem(pair: ImagePair){
         data.add(pair)
+        val index = data.indexOf(pair)
+
+        val view = views[index]
+        view.setImageBitmap(pair.bm)
+        view.invalidate()
     }
 
     override fun getView(pos: Int, convertView: View?, vg: ViewGroup?): View {
-        val view: ImageView?
-
-        if(convertView == null){
-            view = ImageView(this.parent)
-            view.layoutParams = AbsListView.LayoutParams(100, 100)
-            view.setPadding(0,0,0,0)
-            view.scaleType = ImageView.ScaleType.CENTER_CROP
-        }else{
-            view = convertView as ImageView
-        }
-
-        view.setImageBitmap(data[pos].bm)
-        view.setOnClickListener { parent.clickedImage(data[pos].props) }
-
-        return view
+        return views[pos]
     }
 
     override fun getItem(index: Int): Any {
-        return data[index]
+        return views[index]
+    }
+
+    fun getData(index: Int): ImagePair?{
+        return if(index < data.size) data[index] else null
     }
 
     override fun getItemId(index: Int): Long {
@@ -88,6 +107,6 @@ private class ImageAdapter(val parent: MainActivity, initialCount: Int = 0): Bas
     }
 
     override fun getCount(): Int {
-        return data.size
+        return amount
     }
 }
