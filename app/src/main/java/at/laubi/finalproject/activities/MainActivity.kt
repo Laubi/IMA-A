@@ -3,10 +3,8 @@ package at.laubi.finalproject.activities
 import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
-import android.util.DisplayMetrics
 import android.view.View
 import android.view.ViewGroup
-import android.view.WindowManager
 import android.widget.*
 import at.laubi.finalproject.*
 import at.laubi.finalproject.imageUtilities.*
@@ -55,11 +53,6 @@ class MainActivity : Activity() {
     }
 }
 
-fun getScreenSize(wm: WindowManager): DisplayMetrics{
-    val metrics = DisplayMetrics()
-    wm.defaultDisplay.getMetrics(metrics)
-    return metrics
-}
 
 private class ImageAdapter(val parent: MainActivity, initialCount: Int = 0): BaseAdapter(){
     private val data = ArrayList<ImagePair>(initialCount)
