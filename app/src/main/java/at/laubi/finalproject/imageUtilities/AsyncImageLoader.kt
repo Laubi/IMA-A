@@ -1,14 +1,11 @@
-package at.laubi.finalproject
+package at.laubi.finalproject.imageUtilities
 
-import android.app.Application
-import android.content.ContentResolver
 import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
 import android.os.AsyncTask
-import java.io.File
-import java.io.FileOutputStream
+import at.laubi.finalproject.cache.DiskBitmapCache
 
 /**
  * Created by dlaub on 21.01.2018.

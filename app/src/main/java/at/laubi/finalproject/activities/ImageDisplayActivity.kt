@@ -1,7 +1,8 @@
-package at.laubi.finalproject
+package at.laubi.finalproject.activities
 
 import android.app.Activity
 import android.os.Bundle
+import at.laubi.finalproject.R
 
 class ImageDisplayActivity : Activity() {
 

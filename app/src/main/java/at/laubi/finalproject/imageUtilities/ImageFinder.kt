@@ -1,4 +1,4 @@
-package at.laubi.finalproject
+package at.laubi.finalproject.imageUtilities
 
 import android.content.Context
 import android.net.Uri
@@ -17,7 +17,7 @@ fun findImages(context: Context): ArrayList<ImageFileProperties>{
 
     val images = context.contentResolver.query(
         MediaStore.Images.Media.EXTERNAL_CONTENT_URI,
-        projection,
+            projection,
         null,
         null,
         MediaStore.Images.Media.DEFAULT_SORT_ORDER

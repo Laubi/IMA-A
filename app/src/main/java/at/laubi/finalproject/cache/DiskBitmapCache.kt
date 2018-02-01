@@ -1,4 +1,4 @@
-package at.laubi.finalproject
+package at.laubi.finalproject.cache
 
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory

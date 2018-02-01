@@ -1,4 +1,4 @@
-package at.laubi.finalproject
+package at.laubi.finalproject.activities
 
 import android.app.Activity
 import android.content.Intent
@@ -8,6 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
 import android.widget.*
+import at.laubi.finalproject.*
+import at.laubi.finalproject.imageUtilities.*
 
 
 class MainActivity : Activity() {
