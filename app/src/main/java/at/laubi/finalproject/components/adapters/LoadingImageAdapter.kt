@@ -28,7 +28,7 @@ class LoadingImageAdapter(context: Context, initialCount: Int = 0): BaseAdapter(
         }
     }
 
-    fun decreseAmount(){
+    fun decreaseAmount(){
         amount -= 1
         notifyDataSetChanged()
     }

@@ -43,7 +43,7 @@ class MainActivity : Activity() {
                 if (pair.bm != null) {
                     adapter.addItem(pair)
                 }else{
-                    adapter.decreseAmount()
+                    adapter.decreaseAmount()
                 }
 
             }
