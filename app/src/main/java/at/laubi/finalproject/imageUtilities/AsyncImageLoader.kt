@@ -11,8 +11,6 @@ import at.laubi.finalproject.cache.DiskBitmapCache
  * Created by dlaub on 21.01.2018.
  */
 
-private val MODE_READ = "r"
-
 interface AsyncImageLoaderListener{
     fun finishedLoading(pair: ImagePair)
 }
