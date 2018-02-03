@@ -51,6 +51,10 @@ class DiskBitmapCache(directory: File, createSubDirectory: Boolean = false) {
     companion object {
         private var m_instance: DiskBitmapCache? = null
 
+        fun getInstance(): DiskBitmapCache?{
+            return m_instance
+        }
+
         fun getInstance(context: Context): DiskBitmapCache{
             if (m_instance == null) {
                 m_instance = DiskBitmapCache(context)
