@@ -35,7 +35,8 @@ private fun resolveImages(contentResolver: ContentResolver, selection: String?, 
                 imageCursor.getLong(index.id),
                 imageCursor.getInt(index.width),
                 imageCursor.getInt(index.height),
-                imageCursor.getString(index.data)
+                imageCursor.getString(index.data),
+                contentResolver
         )
     }
 
@@ -48,7 +49,8 @@ class LoadableImage internal constructor(
         val id: Long,
         val width: Int,
         val height: Int,
-        val data: String
+        val data: String,
+        private val contentResolver: ContentResolver
 ){
     val uri: Uri
         get() = Uri.fromFile(File(data))
