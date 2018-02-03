@@ -52,8 +52,8 @@ class LoadableImage internal constructor(
         val data: String,
         private val contentResolver: ContentResolver
 ){
-    val uri: Uri
-        get() = Uri.fromFile(File(data))
+    val uri: Uri get() = Uri.fromFile(File(data))
+    val cacheId: String get() = "$id-$width-$height"
 
     companion object Factory{
 
