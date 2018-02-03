@@ -15,7 +15,7 @@ class ImageLoader(private val context: Context, private val id: Long, private va
     private val cacheId
         get() = "$id-${size.width}-${size.height}"
 
-    private val cache = DiskBitmapCache.getInstance(context)
+    private val cache = DiskBitmapCache.instance
 
     fun execute(){
         ImageLoaderExecutor().execute()
@@ -26,7 +26,7 @@ class ImageLoader(private val context: Context, private val id: Long, private va
 
             Process.setThreadPriority(-20)
 
-            val cachedBitmap = cache.loadBitmap(cacheId)
+            val cachedBitmap = cache?.loadBitmap(cacheId)
             if(cachedBitmap != null) return cachedBitmap
 
             var stream = context.contentResolver.openInputStream(uri)
@@ -43,7 +43,7 @@ class ImageLoader(private val context: Context, private val id: Long, private va
             val bm =  BitmapFactory.decodeStream(stream, null, options)
             stream.close()
 
-            cache.storeBitmap(bm, cacheId)
+            cache?.storeBitmap(bm, cacheId)
 
             return bm
         }

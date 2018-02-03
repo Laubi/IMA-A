@@ -20,7 +20,7 @@ class ImagePair(val props: ImageFileProperties, val bm: Bitmap?)
 class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties, val context: Context, var listener: AsyncImageLoaderListener?) {
     private val contentResolver = context.contentResolver
     private val targetSize = 100
-    private val cache = DiskBitmapCache(context.cacheDir, true)
+    private val cache = DiskBitmapCache.instance
 
     fun loadAsync(){
         LoadImage().execute(imageFileProperties.uri)
@@ -32,7 +32,7 @@ class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties,
             val param = params.first()
             val cacheId = imageFileProperties.id.toString(16)
 
-            val cachedBitmap = cache.loadBitmap(cacheId)
+            val cachedBitmap = cache?.loadBitmap(cacheId)
             if(cachedBitmap != null) return ImagePair(imageFileProperties, cachedBitmap)
 
             val options = BitmapFactory.Options()
@@ -41,7 +41,7 @@ class AsyncImageLoader constructor(val imageFileProperties: ImageFileProperties,
 
             val bm = BitmapFactory.decodeStream(contentResolver.openInputStream(param), null, options)
 
-            cache.storeBitmap(bm, cacheId)
+            cache?.storeBitmap(bm, cacheId)
 
             return ImagePair(imageFileProperties, bm)
         }

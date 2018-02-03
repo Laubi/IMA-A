@@ -1,8 +1,6 @@
 package at.laubi.finalproject.imageUtilities
 
-import android.content.AsyncTaskLoader
 import android.content.ContentResolver
-import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import android.net.Uri
@@ -89,13 +87,11 @@ internal class LoadableImageLoader constructor(
     }
 
     private fun tryLoadBitmapFromCache(key: String): Bitmap?{
-        val cache = DiskBitmapCache.getInstance()
-        return cache?.loadBitmap(key)
+        return DiskBitmapCache.instance?.loadBitmap(key)
     }
 
     private fun tryStoreBitmapInCache(key: String, bitmap: Bitmap){
-        val cache = DiskBitmapCache.getInstance()
-        cache?.storeBitmap(bitmap, key)
+        DiskBitmapCache.instance?.storeBitmap(bitmap, key)
     }
 
     private fun calculateSampleSize(target: Size): Int{

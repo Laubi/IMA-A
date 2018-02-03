@@ -6,23 +6,11 @@ import android.graphics.BitmapFactory
 import java.io.File
 import java.io.FileOutputStream
 
-class DiskBitmapCache(directory: File, createSubDirectory: Boolean = false) {
-    private val cacheDirectory: File
-
-    constructor(context: Context): this(context.cacheDir, true)
+class DiskBitmapCache private constructor(context: Context) {
+    private val cacheDirectory: File = File(context.cacheDir.absolutePath + File.separator + ".cache")
 
     init{
-        if(!directory.exists()){
-            directory.mkdir()
-        }else if (!directory.isDirectory){
-            throw IllegalArgumentException("Cache-directory is not a directory: '$directory'") as Throwable
-        }
-
-        cacheDirectory = if(createSubDirectory){
-            File(directory.absolutePath + File.separator + ".cache")
-        }else directory
-
-        cacheDirectory.mkdir()
+        cacheDirectory.mkdirs()
     }
 
     fun storeBitmap(bitmap: Bitmap, key: String){
@@ -49,18 +37,14 @@ class DiskBitmapCache(directory: File, createSubDirectory: Boolean = false) {
     }
 
     companion object {
-        private var m_instance: DiskBitmapCache? = null
+        var instance: DiskBitmapCache? = null
 
-        fun getInstance(): DiskBitmapCache?{
-            return m_instance
-        }
-
-        fun getInstance(context: Context): DiskBitmapCache{
-            if (m_instance == null) {
-                m_instance = DiskBitmapCache(context)
+        fun initialize(context: Context): DiskBitmapCache{
+            if (instance == null) {
+                instance = DiskBitmapCache(context)
             }
 
-           return m_instance as DiskBitmapCache
+           return instance as DiskBitmapCache
         }
     }
 }
