@@ -1,6 +1,7 @@
 package at.laubi.finalproject.activities
 
 import android.app.Activity
+import android.content.Intent
 import android.os.Bundle
 import android.widget.*
 import at.laubi.finalproject.*
@@ -23,7 +24,7 @@ class MainActivity : Activity() {
 
         layout = this.findViewById(R.id.gridView)
         layout.adapter = adapter
-        layout.numColumns = (getScreenSize(windowManager).widthPixels / 100) + 1
+        layout.numColumns = (getScreenSize(windowManager).width / 100) + 1
 
 
         images.forEach { image ->
@@ -32,7 +33,7 @@ class MainActivity : Activity() {
 
         layout.onItemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
             adapter.getData(pos)?.let {
-                Toast.makeText(this, pos.toString(), Toast.LENGTH_SHORT).show()
+                callImageDisplayActivity(it.props)
             }
         }
     }
@@ -48,6 +49,12 @@ class MainActivity : Activity() {
 
             }
         }
+    }
+
+    private fun callImageDisplayActivity(props: ImageFileProperties){
+        val intent = Intent(this, ImageDisplayActivity::class.java)
+        intent.putExtras(ImageDisplayActivity.buildBundle(props.id, props.data))
+        startActivity(intent)
     }
 }
 
