@@ -1,15 +1,15 @@
 package at.laubi.finalproject.cache
 
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.BitmapFactory
 import java.io.File
 import java.io.FileOutputStream
 
-/**
- * Created by dlaubreiter on 30.01.18.
- */
 class DiskBitmapCache(directory: File, createSubDirectory: Boolean = false) {
     private val cacheDirectory: File
+
+    constructor(context: Context): this(context.cacheDir, true)
 
     init{
         if(!directory.exists()){
@@ -46,5 +46,17 @@ class DiskBitmapCache(directory: File, createSubDirectory: Boolean = false) {
 
     private fun getTargetFile(key: String): File{
         return File(cacheDirectory.absolutePath + File.separator + key)
+    }
+
+    companion object {
+        private var m_instance: DiskBitmapCache? = null
+
+        fun getInstance(context: Context): DiskBitmapCache{
+            if (m_instance == null) {
+                m_instance = DiskBitmapCache(context)
+            }
+
+           return m_instance as DiskBitmapCache
+        }
     }
 }
