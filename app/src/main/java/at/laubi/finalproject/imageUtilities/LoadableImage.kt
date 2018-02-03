@@ -128,6 +128,11 @@ class LoadableImage internal constructor(
     val uri: Uri get() = Uri.fromFile(File(data))
     val cacheId: String get() = "$id-$width-$height"
 
+    fun load(size: Size, listener: (bm: Bitmap?) -> Unit){
+        LoadableImageLoader(contentResolver, this, size, listener)
+                .load()
+    }
+
     companion object Factory{
 
         fun all(contentResolver: ContentResolver): List<LoadableImage>{
