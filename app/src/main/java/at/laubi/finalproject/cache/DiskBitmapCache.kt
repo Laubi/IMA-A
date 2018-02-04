@@ -20,7 +20,12 @@ class DiskBitmapCache private constructor(context: Context) {
             target.delete()
         }
 
-        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, FileOutputStream(target))
+        // Execute saving bitmaps on another threads
+        Thread({
+            Thread.currentThread().priority = Thread.MIN_PRIORITY
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 50, FileOutputStream(target))
+        }).start()
+
 
     }
 
