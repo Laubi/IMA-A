@@ -1,4 +1,4 @@
-package at.laubi.finalproject.components.adapters
+package at.laubi.finalproject.adapters
 
 import android.content.Context
 import android.view.View

@@ -6,7 +6,7 @@ import android.os.Bundle
 import android.widget.*
 import at.laubi.finalproject.*
 import at.laubi.finalproject.cache.DiskBitmapCache
-import at.laubi.finalproject.components.adapters.LoadingImageAdapter
+import at.laubi.finalproject.adapters.LoadingImageAdapter
 import at.laubi.finalproject.imageUtilities.*
 
 
