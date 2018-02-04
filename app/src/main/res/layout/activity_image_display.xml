@@ -6,11 +6,11 @@
     android:layout_height="match_parent"
     tools:context="at.laubi.finalproject.activities.ImageDisplayActivity">
 
-    <ImageView
+    <at.laubi.finalproject.components.InteractiveImageView
         android:id="@+id/imageView"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:src="@android:color/holo_blue_light"
+        android:src="@android:drawable/ic_menu_rotate"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
