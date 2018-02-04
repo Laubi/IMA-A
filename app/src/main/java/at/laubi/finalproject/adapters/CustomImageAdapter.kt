@@ -25,7 +25,7 @@ class CustomImageAdapter(
             newView.layoutParams = ViewGroup.LayoutParams(100, 100)
             newView.scaleType = ImageView.ScaleType.CENTER_CROP
 
-            newView.extraSmallerRation = 4 // We load the images much smaller than we would need => Speed
+            newView.extraSmallerRation = 2 // We load the images much smaller than we would need => Speed
 
             newView
         }
