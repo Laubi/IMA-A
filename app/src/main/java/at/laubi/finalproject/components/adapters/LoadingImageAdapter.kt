@@ -1,9 +1,6 @@
 package at.laubi.finalproject.components.adapters
 
 import android.content.Context
-import android.graphics.Bitmap
-import android.graphics.drawable.BitmapDrawable
-import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView

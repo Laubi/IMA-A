@@ -2,17 +2,14 @@ package at.laubi.finalproject.activities
 
 import android.app.Activity
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.GestureDetector
 import android.view.MotionEvent
 import android.widget.ImageView
 import at.laubi.finalproject.R
 import at.laubi.finalproject.getScreenSize
-import at.laubi.finalproject.imageUtilities.ImageLoader
 import at.laubi.finalproject.imageUtilities.LoadableImage
 import nl.dionsegijn.pixelate.Pixelate
-import java.io.File
 
 class ImageDisplayActivity : Activity() {
     private lateinit var imageView: ImageView
