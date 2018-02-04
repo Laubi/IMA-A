@@ -6,13 +6,13 @@ import android.os.Bundle
 import android.widget.*
 import at.laubi.finalproject.*
 import at.laubi.finalproject.cache.DiskBitmapCache
-import at.laubi.finalproject.adapters.LoadingImageAdapter
+import at.laubi.finalproject.adapters.CustomImageAdapter
 import at.laubi.finalproject.imageUtilities.*
 
 
 class MainActivity : Activity() {
     private lateinit var layout: GridView
-    private lateinit var adapter: LoadingImageAdapter
+    private lateinit var adapter: CustomImageAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -23,7 +23,7 @@ class MainActivity : Activity() {
 
         val images = LoadableImage.all(contentResolver)
 
-        adapter = LoadingImageAdapter(this, images)
+        adapter = CustomImageAdapter(this, images)
 
         layout = this.findViewById(R.id.gridView)
         layout.adapter = adapter

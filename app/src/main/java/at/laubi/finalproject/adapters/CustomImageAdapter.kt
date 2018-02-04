@@ -9,7 +9,7 @@ import android.widget.ImageView
 import at.laubi.finalproject.components.LoadingImage
 import at.laubi.finalproject.imageUtilities.LoadableImage
 
-class LoadingImageAdapter(
+class CustomImageAdapter(
         private val context: Context,
         private val images: List<LoadableImage>
 ): BaseAdapter(){
