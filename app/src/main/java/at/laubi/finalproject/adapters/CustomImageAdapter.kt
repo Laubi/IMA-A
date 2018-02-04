@@ -22,7 +22,7 @@ class CustomImageAdapter(
             loadingImage
         }else{
             val newView = LoadingImage(context)
-            newView.layoutParams = AbsListView.LayoutParams(100, 100)
+            newView.layoutParams = ViewGroup.LayoutParams(100, 100)
             newView.scaleType = ImageView.ScaleType.CENTER_CROP
 
             newView.extraSmallerRation = 4 // We load the images much smaller than we would need => Speed
