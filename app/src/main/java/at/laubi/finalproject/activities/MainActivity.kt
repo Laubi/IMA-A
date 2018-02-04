@@ -27,7 +27,7 @@ class MainActivity : Activity() {
 
         layout = this.findViewById(R.id.gridView)
         layout.adapter = adapter
-        layout.numColumns = (getScreenSize(windowManager).width / 100) + 1
+        layout.numColumns = (screenSize.width / 100) + 1
 
         layout.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, ID ->
             val intent = Intent(this, ImageDisplayActivity::class.java)
