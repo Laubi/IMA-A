@@ -49,23 +49,27 @@ private fun resolveImages(contentResolver: ContentResolver, selection: String?, 
     return results
 }
 
-internal class LoadableImageLoader constructor(
+class ImageLoadTask internal constructor(
         val contentResolver: ContentResolver,
         val image: LoadableImage,
         val targetSize: Size,
         val listener: (bm: Bitmap?) -> Unit
 ){
+    var cancel = false
+
     fun load(){
         Executor().execute()
     }
 
     // We create an inner class, so the AsyncTask will not leak outside
-    private inner class Executor: AsyncTask<Void, Void, Bitmap>() {
+    private inner class Executor: AsyncTask<Void, Void, Bitmap?>() {
         override fun onPostExecute(result: Bitmap?) {
-            listener(result)
+            if(!cancel)
+                listener(result)
         }
 
-        override fun doInBackground(vararg p0: Void?): Bitmap {
+        override fun doInBackground(vararg p0: Void?): Bitmap? {
+            if(cancel) return null
             val cachedBitmap = tryLoadBitmapFromCache(image.cacheId)
 
             return if(cachedBitmap != null){
@@ -76,6 +80,7 @@ internal class LoadableImageLoader constructor(
                 options.inSampleSize = calculateSampleSize(targetSize)
 
                 val stream = contentResolver.openInputStream(image.uri)
+                if(cancel) return null
                 val bm = BitmapFactory.decodeStream(stream, null, options)
                 stream.close()
 
@@ -124,9 +129,10 @@ class LoadableImage internal constructor(
     val uri: Uri get() = Uri.fromFile(File(data))
     val cacheId: String get() = "$id-$width-$height"
 
-    fun load(size: Size, listener: (bm: Bitmap?) -> Unit){
-        LoadableImageLoader(contentResolver, this, size, listener)
-                .load()
+    fun load(size: Size, listener: (bm: Bitmap?) -> Unit): ImageLoadTask {
+        val loader = ImageLoadTask(contentResolver, this, size, listener)
+        loader.load()
+        return loader
     }
 
     companion object Factory{
