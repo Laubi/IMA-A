@@ -20,7 +20,7 @@ class DiskBitmapCache private constructor(context: Context) {
             target.delete()
         }
 
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, FileOutputStream(target))
+        bitmap.compress(Bitmap.CompressFormat.JPEG, 50, FileOutputStream(target))
 
     }
 
