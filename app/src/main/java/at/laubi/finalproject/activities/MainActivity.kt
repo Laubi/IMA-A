@@ -1,6 +1,5 @@
 package at.laubi.finalproject.activities
 
-import android.Manifest.permission.READ_EXTERNAL_STORAGE
 import android.app.Activity
 import android.content.Intent
 import android.content.pm.PackageManager.PERMISSION_DENIED
