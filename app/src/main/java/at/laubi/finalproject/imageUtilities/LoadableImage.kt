@@ -9,6 +9,9 @@ import android.provider.MediaStore.Images.Media.*
 import android.util.Size
 import at.laubi.finalproject.cache.DiskBitmapCache
 import java.io.File
+import java.util.concurrent.LinkedBlockingDeque
+import java.util.concurrent.ThreadPoolExecutor
+import java.util.concurrent.TimeUnit
 
 
 private val projection = arrayOf(_ID, DATA, HEIGHT, WIDTH)
@@ -58,7 +61,7 @@ class ImageLoadTask internal constructor(
     var cancel = false
 
     fun load(){
-        Executor().execute()
+        Executor().executeOnExecutor(executor)
     }
 
     val cacheId = "${image.id}-${targetSize.width}-${targetSize.height}"
@@ -88,6 +91,7 @@ class ImageLoadTask internal constructor(
 
                 tryStoreBitmapInCache(cacheId, bm)
 
+
                 bm
             }
         }
@@ -116,6 +120,10 @@ class ImageLoadTask internal constructor(
         }
 
         return sampleSize
+    }
+
+    private companion object {
+        val executor = ThreadPoolExecutor(0xf, 0xff, 10, TimeUnit.SECONDS, LinkedBlockingDeque<Runnable>());
     }
 }
 
