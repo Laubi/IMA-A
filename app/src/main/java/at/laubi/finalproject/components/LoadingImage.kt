@@ -4,6 +4,7 @@ import android.content.Context
 import android.util.AttributeSet
 import android.util.Size
 import android.widget.ImageView
+import at.laubi.finalproject.div
 import at.laubi.finalproject.imageUtilities.ImageLoadTask
 import at.laubi.finalproject.imageUtilities.LoadableImage
 
@@ -24,10 +25,9 @@ class LoadingImage: ImageView {
                 currentTask?.cancel = true
             }
             setLoadingIcon()
-            currentTask = value?.load(Size(
-                    layoutParams.width / extraSmallerRation,
-                    layoutParams.height / extraSmallerRation
-            ), this::setImageBitmap)
+            currentTask = value?.load(
+                    Size(layoutParams.width,layoutParams.height).div(extraSmallerRation),
+                    this::setImageBitmap)
             mImage = value
         }
 
