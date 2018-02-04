@@ -10,6 +10,7 @@ import android.widget.ImageView
 import at.laubi.finalproject.R
 import at.laubi.finalproject.getScreenSize
 import at.laubi.finalproject.imageUtilities.ImageLoader
+import at.laubi.finalproject.imageUtilities.LoadableImage
 import nl.dionsegijn.pixelate.Pixelate
 import java.io.File
 
@@ -28,17 +29,10 @@ class ImageDisplayActivity : Activity() {
         imageView = findViewById(R.id.imageView)
         gestureDetector = GestureDetector(this, gestureListener)
 
-        val bundle = getBundle(this)
-        val uri = Uri.fromFile(File(bundle.data))
 
-        val loader = ImageLoader(this, bundle.id, uri, getScreenSize(windowManager))
-        loader.callback = { bitmap ->
-            bitmap?.let {
-                targetBitmap = bitmap
-                imageView.setImageBitmap(bitmap)
-            }
-        }
-        loader.execute()
+        val image = LoadableImage.byId(contentResolver, intent.extras.getLong("ID"))
+
+        image?.load(getScreenSize(windowManager), imageView::setImageBitmap)
     }
 
     override fun onTouchEvent(event: MotionEvent?): Boolean {
@@ -71,30 +65,5 @@ class ImageDisplayActivity : Activity() {
                     imageView.setImageBitmap(bitmap)
                 }
                 .make()
-    }
-
-
-    class ActivityBundle(val id: Long, val data: String)
-
-    companion object {
-
-        fun buildBundle(id: Long, data: String): Bundle{
-            val bundle = Bundle()
-            bundle.putLong("ID", id)
-            bundle.putString("DATA", data)
-
-            return bundle
-        }
-
-        private fun getBundle(activity: ImageDisplayActivity): ActivityBundle{
-            val bundle = activity.intent.extras
-
-            return ActivityBundle(
-                    bundle.getLong("ID"),
-                    bundle.getString("DATA")
-            )
-        }
-
-
     }
 }
