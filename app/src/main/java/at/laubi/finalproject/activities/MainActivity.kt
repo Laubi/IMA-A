@@ -28,15 +28,12 @@ class MainActivity : Activity() {
         layout = this.findViewById(R.id.gridView)
         layout.adapter = adapter
         layout.numColumns = (getScreenSize(windowManager).width / 100) + 1
-        layout.onItemClickListener = AdapterView.OnItemClickListener { _, _, pos, _ ->
 
+        layout.onItemClickListener = AdapterView.OnItemClickListener { _, _, _, ID ->
+            val intent = Intent(this, ImageDisplayActivity::class.java)
+            intent.putExtra("ID", ID)
+            startActivity(intent)
         }
-    }
-
-    private fun callImageDisplayActivity(props: ImageFileProperties){
-        val intent = Intent(this, ImageDisplayActivity::class.java)
-        intent.putExtras(ImageDisplayActivity.buildBundle(props.id, props.data))
-        startActivity(intent)
     }
 }
 
