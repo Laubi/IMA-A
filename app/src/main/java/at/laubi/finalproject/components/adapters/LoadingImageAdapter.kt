@@ -1,64 +1,52 @@
 package at.laubi.finalproject.components.adapters
 
 import android.content.Context
+import android.graphics.Bitmap
+import android.graphics.drawable.BitmapDrawable
+import android.util.Size
 import android.view.View
 import android.view.ViewGroup
 import android.widget.AbsListView
 import android.widget.BaseAdapter
 import android.widget.ImageView
 import at.laubi.finalproject.components.LoadingImage
-import at.laubi.finalproject.imageUtilities.ImagePair
+import at.laubi.finalproject.imageUtilities.LoadableImage
 
-class LoadingImageAdapter(context: Context, initialCount: Int = 0): BaseAdapter(){
-    private val views = ArrayList<LoadingImage>(initialCount)
-    private val data = ArrayList<ImagePair>(initialCount)
-    private var amount = initialCount
+class LoadingImageAdapter(
+        private val context: Context,
+        private val images: List<LoadableImage>
+): BaseAdapter(){
 
-    private companion object {
-        val layoutParams = AbsListView.LayoutParams(100, 100)
-    }
+    override fun getView(index: Int, loadingImage: View?, vg: ViewGroup?): View {
+        val target = images[index]
 
-    init{
-        for(i in 0.rangeTo(initialCount)){
-            val view = LoadingImage(context)
-            view.layoutParams = layoutParams
-            view.setPadding(0,0,0,0)
-            view.scaleType = ImageView.ScaleType.CENTER_CROP
-            views.add(view)
+        val view = if(loadingImage != null){
+            loadingImage as LoadingImage
+            loadingImage
+        }else{
+            val newView = LoadingImage(context)
+            newView.layoutParams = AbsListView.LayoutParams(100, 100)
+            newView.scaleType = ImageView.ScaleType.CENTER_CROP
+
+            newView.extraSmallerRation = 4 // We load the images much smaller than we would need => Speed
+
+            newView
         }
-    }
 
-    fun decreaseAmount(){
-        amount -= 1
-        notifyDataSetChanged()
-    }
+        view.image = target
 
-    fun addItem(pair: ImagePair){
-        data.add(pair)
-        val index = data.indexOf(pair)
-
-        val view = views[index]
-        view.setImageBitmap(pair.bm)
-        view.invalidate()
-    }
-
-    override fun getView(pos: Int, convertView: View?, vg: ViewGroup?): View {
-        return views[pos]
+        return view
     }
 
     override fun getItem(index: Int): Any {
-        return views[index]
-    }
-
-    fun getData(index: Int): ImagePair?{
-        return if(index < data.size) data[index] else null
+        return images[index]
     }
 
     override fun getItemId(index: Int): Long {
-        return index + 0L
+        return images[index].id
     }
 
     override fun getCount(): Int {
-        return amount
+        return images.size
     }
 }
